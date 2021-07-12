@@ -1,7 +1,38 @@
-# Здесь будет ваш проект на Реакте с авторизацией и регистрацией
+# Mesto (React with authorization) 
 
-Используйте ваши предыдущие наработки по проекту Mesto. Это может быть работа 11-го спринта или его улучшенная версия после 2-х последних спринтов. 
+[About](#about) /
+[Changelog](#changelog) /
+[Environment](#environment) /
+[Contact](#contact)
 
-Все запросы на авторизацию, регистрацию и проверку токена должны работать через сервис `https://auth.nomoreparties.co`. Остальные запросы, не относящиеся к этой проектной работе могут быть к бэкенду из предыдущих спринтов.
+## About
+Original <a href="https://github.com/avtorsky/mesto" target="_blank">/mesto</a> single page demo ported to React with authorization.
 
-Успехов!
+Developed under the [Practicum](https://practicum.yandex.com/web/) online bootcamp with the following stack implementation:
+* JavaScript, React, Jest
+
+## Changelog
+Release 20210712:
+* docs(README.md): create-react-app init && <a href="https://github.com/avtorsky/react-mesto-auth" target="_blank">/react-mesto-auth</a> setup 
+
+Release 20210711:
+* feat(EditProfilePopup.js && EditAvatarPopup.js && AddCardPopup.js): support basic form validation
+* build(package.json): project deploy in production via NPM gh-pages
+
+Release 20210703:
+* feat(App.js): add routing && elements context change via onRender prop
+* refactor(App.js): split the code into components EditProfilePopup.js, EditAvatarPopup.js, AddCardPopup.js
+* feat(DeleteCardPopup.js): add card delete confirmation modal
+* feat(App.js): close all modals on ESC keydown && external area click via useEffect hook
+
+Release 20210617:
+* build(react-app): port components to App.js && connect the hooks 
+
+Release 20210614:
+* docs(README.md): create-react-app init && <a href="https://github.com/avtorsky/mesto-react" target="_blank">/mesto-react</a> setup 
+
+## Environment
+__Production release:__ <a href="https://avtorsky.github.io/react-mesto-auth/" target="_blank">https://avtorsky.github.io/react-mesto-auth/</a>
+
+## Contact
+__GitHub:__ <a href="https://github.com/avtorsky" target="_blank">https://github.com/avtorsky</a>
