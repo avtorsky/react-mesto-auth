@@ -12,8 +12,11 @@ Developed under the [Practicum](https://practicum.yandex.com/web/) online bootca
 * JavaScript, React, Jest
 
 ## Changelog
+Release 20210718:
+* feat(App.js): registration && authorization major release
+
 Release 20210712:
-* docs(README.md): create-react-app init && <a href="https://github.com/avtorsky/react-mesto-auth" target="_blank">/react-mesto-auth</a> setup 
+* docs(README.md): git clone && <a href="https://github.com/avtorsky/react-mesto-auth" target="_blank">/react-mesto-auth</a> setup 
 
 Release 20210711:
 * feat(EditProfilePopup.js && EditAvatarPopup.js && AddCardPopup.js): support basic form validation

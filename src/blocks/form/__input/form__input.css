@@ -14,3 +14,9 @@
 .form__input:invalid {
   color: #c4c4c4;
 }
+
+@media screen and (max-width: 768px) {
+  .form__input {
+    margin-bottom: 25px;
+  }
+}

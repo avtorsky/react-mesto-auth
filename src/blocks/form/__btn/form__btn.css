@@ -7,12 +7,24 @@
   font-weight: 400;
   font-style: normal;
   line-height: 1.21;
+  border-radius: 2px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.form__btn:hover {
+  opacity: .80;
+}
+
+.form__btn:focus {
+  outline-color: #c4c4c4;
 }
 
 .form__btn:disabled {
   cursor: default;
   background: #ffffff;
   color: rgba(0, 0, 0, .2);
+  pointer-events: none;
   border: 1px solid rgba(0, 0, 0, .2);
 }
 
