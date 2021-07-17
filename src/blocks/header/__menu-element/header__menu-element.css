@@ -1,0 +1,14 @@
+.header__menu-element {
+  margin: 0 24px 0 0;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+}
+
+@media screen and (max-width: 768px) {
+  .header__menu-element {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}

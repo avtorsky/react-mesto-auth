@@ -2,7 +2,9 @@ import React from 'react';
 
 function Spinner() {
   return (
-    <div className="content__spinner" />
+    <div className="content__spinner-wrapper">
+      <div className="content__spinner" />
+    </div>
   );
 };
 
