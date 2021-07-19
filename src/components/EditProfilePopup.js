@@ -1,66 +1,27 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import PopupWithForm from './PopupWithForm.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import { formInputClass } from '../utils/constants.js';
+import { useFormValidation } from '../hooks/useFormValidation.js';
 
 function EditProfilePopup({ isOpen, onClose, onUpdateUser, onRender }) {
   const currentUser = useContext(CurrentUserContext);
-  const [input, setInput] = useState({
-    name: { value: currentUser.name, isValid: true },
-    status: { value: currentUser.about, isValid: true }
-  });
-  const [errorClass, setErrorClass] = useState({
-    name: { input: '', error: '' },
-    status: { input: '', error: '' }
-  });
-  const [errorMessage, setErrorMessage] = useState({ name: '', status: '' })
-
-  function handleChange(elem) {
-    const { name, value, validity } = elem.target;
-    setInput({ ...input, [name]: {
-      value: value,
-      isValid: validity.valid
-    }});
-  };
-
-  function handleInput(elem) {
-    const { name, value, validity, validationMessage } = elem.target;
-    setInput({...input, [name]: {
-      value: value,
-      isValid: validity.valid
-    }});
-    setErrorMessage({ ...errorMessage, [name]: validationMessage });
-    setErrorClass({ ...errorClass, [name]: {
-      input: !validity.valid ? formInputClass.inputErrorClass : '',
-      error: !validity.valid ? formInputClass.errorClass : ''
-    }});
-  };
+  const { values, handleChange, errors, isValid, resetForm } = useFormValidation()
 
   function handleSubmit(event) {
     event.preventDefault();
     onUpdateUser({
-      name: input.name.value,
-      about: input.status.value
+      name: values.name,
+      about: values.status
     });
   };
 
   useEffect(() => {
+    resetForm();
     if (isOpen) {
-      setInput({
-        name: { value: currentUser.name, isValid: true },
-        status: { value: currentUser.about, isValid: true }
-      });
-    } else {
-      setInput({
-        name: { value: '', isValid: false },
-        status: { value: '', isValid: false }
-      });
-    }
-    setErrorClass({
-      name: { input: '', error: '' },
-      status: { input: '', error: ''}
-    });
-  }, [currentUser, isOpen]);
+      resetForm({ name: currentUser.name, status: currentUser.about }, {}, true);
+    };
+  }, [currentUser, isOpen, resetForm]);
 
   return (
     <PopupWithForm
@@ -70,12 +31,12 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, onRender }) {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
-      submitDisabled={!input.name.isValid || !input.status.isValid}
+      submitDisabled={!isValid}
     >
       <fieldset className="form-edit__fieldset">
         <label className="form__field">
           <input
-            className={`form__input form-edit__input ${errorClass.name.input}`}
+            className={`form__input form-edit__input ${errors.name ? formInputClass.inputErrorClass : ""}`}
             type="text"
             id="profile-name"
             name="name"
@@ -83,15 +44,14 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, onRender }) {
             minLength="2"
             maxLength="40"
             required
-            value={input.name.value}
+            value={values.name || ""}
             onChange={handleChange}
-            onInput={handleInput}
           />
-          <span className={`form__input-error ${errorClass.name.error}`} id="profile-name-error">{errorMessage.name}</span>
+          <span className={`form__input-error ${formInputClass.errorClass}`} id="profile-name-error">{errors.name || ""}</span>
         </label>
         <label className="form__field">
           <input
-            className={`form__input form-edit__input ${errorClass.status.input}`}
+            className={`form__input form-edit__input ${errors.status ? formInputClass.inputErrorClass : ""}`}
             type="text"
             id="profile-status"
             name="status"
@@ -99,11 +59,10 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, onRender }) {
             minLength="2"
             maxLength="200"
             required
-            value={input.status.value}
+            value={values.status || ""}
             onChange={handleChange}
-            onInput={handleInput}
           />
-          <span className={`form__input-error ${errorClass.status.error}`} id="profile-status-error">{errorMessage.status}</span>
+          <span className={`form__input-error ${formInputClass.errorClass}`} id="profile-status-error">{errors.status || ""}</span>
         </label>
       </fieldset>
     </PopupWithForm>

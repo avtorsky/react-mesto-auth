@@ -4,6 +4,13 @@
   font-weight: normal;
   font-size: 18px;
   line-height: 22px;
+  color: #ffffff;
+  text-decoration: none;
+  transition: opacity .4s;
+}
+
+.header__menu-element:hover {
+  opacity: .6;
 }
 
 @media screen and (max-width: 768px) {

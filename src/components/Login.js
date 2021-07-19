@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import * as auth from '../utils/auth.js';
 import { validateField } from '../utils/constants.js';
-import { useHistory } from 'react-router-dom';
 
 const minInputLength = 4;
 const validationConfig = {
@@ -15,11 +13,8 @@ const validationConfig = {
   }
 }
 
-function Login({ handleLogin }) {
-  let history = useHistory();
-
+function Login({ handleLogin, onRender }) {
   const [isDisabled, setIsDisabled] = useState(true);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [formValues, setFormValues] = useState({
     email: '',
     password: ''
@@ -40,26 +35,12 @@ function Login({ handleLogin }) {
   const isSubmitDisabled = isPasswordInvalid || isEmailInvalid;
   const isEmailValid = errors.email.required || errors.email.email;
   const isPasswordValid = errors.password.required || errors.password.minLength;
-  const isInactive = isDisabled || isSubmitDisabled || isProcessing;
+  const isInactive = isDisabled || isSubmitDisabled || onRender;
   
   function handleSubmit(event) {
     event.preventDefault();
-    setIsProcessing(true);
-    auth.authorize(formValues.email, formValues.password)
-      .then((data) => {
-        if (data.token) {
-          localStorage.setItem('token', data.token);
-          handleLogin();
-          history.push('/');
-        }
-      })
-      .catch((err) => {
-        console.log(`Аутентификация не пройдена. Ошибка ${err}`);
-      })
-      .finally(() => {
-        setIsDisabled(true);
-        setIsProcessing(false);
-      });
+    handleLogin(formValues.email, formValues.password);
+    setIsDisabled(true);
   };
 
   const handleInputChange = useCallback((event) => {
@@ -134,7 +115,7 @@ function Login({ handleLogin }) {
             type="submit"
             className={`form__btn form__btn_position_sign ${isInactive && 'form__btn_disabled'}`}
             disabled={isInactive}
-          >{isProcessing ? 'Авторизация...' : 'Войти'}</button>
+          >{onRender ? 'Авторизация...' : 'Войти'}</button>
         </form>
         <p className="login__auth-text">&nbsp;</p>
       </div>
