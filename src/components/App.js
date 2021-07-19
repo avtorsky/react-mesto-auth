@@ -39,7 +39,7 @@ function App() {
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
 
-  let history = useHistory();
+  const history = useHistory();
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -163,12 +163,35 @@ function App() {
     }
   };
 
-  function handleLogin() {
-    handleTokenCheck();
-    setAuthState((prevState) => ({
-      ...prevState,
-      loggedIn: true
-    }));
+  function handleLogin(email, password) {
+    setIsProcessing(true);
+    auth.authorize(email, password)
+      .then((data) => {
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          handleTokenCheck();
+          setAuthState((prevState) => ({
+            ...prevState,
+            loggedIn: true
+          }));
+          history.push('/');
+        }
+      })
+      .catch((err) => {
+        switch (err) {
+          case 400:
+            console.log('Ошибка 400. Не передано одно из полей.');
+            break;
+          case 401:
+            console.log(`Ошибка 401. Пользователь ${email} не найден.`);
+            break;
+          default:
+            console.log(`Аутентификация не пройдена. Ошибка ${err}`);
+        };
+      })
+      .finally(() => {
+        setIsProcessing(false);
+      });
   };
 
   function handleSignOut() {
@@ -178,6 +201,31 @@ function App() {
     });
     localStorage.removeItem('token');
     history.push('/sign-in');
+  };
+
+  function handleRegister(email, password) {
+    setIsProcessing(true);
+    auth.register(email, password)
+      .then((res) => {
+        if (!res.error) {
+          setIsInfoTooltipPopupOpen(true);
+          setRegistrationSuccess(true);
+        } else {
+          setIsInfoTooltipPopupOpen(true);
+        }
+      })
+      .catch((err) => {
+        switch (err) {
+          case 400:
+            console.log('Ошибка 400. Некорректно заполнено одно из полей.');
+            break;
+          default:
+            console.log(`Регистрация не выполнена. Ошибка ${err}`);
+        };
+      })
+      .finally(() => {
+        setIsProcessing(false);
+      });
   };
 
   useEffect(() => {
@@ -230,12 +278,16 @@ function App() {
             email={authState.email}
             />
             <Route path="/sign-in">
-              <Login handleLogin={handleLogin} email={authState.email} />
+              <Login
+                handleLogin={handleLogin}
+                email={authState.email}
+                onRender={isProcessing}
+              />
             </Route>
             <Route path="/sign-up">
               <Register
-                onRegister={setRegistrationSuccess}
-                isOpen={setIsInfoTooltipPopupOpen}
+                handleRegister={handleRegister}
+                onRender={isProcessing}
               />
             </Route>
             <Route path="*">

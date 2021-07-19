@@ -32,7 +32,7 @@ function PopupWithForm({ name, isOpen, onClose, title, children, submitButtonTex
     <section className={`popup popup-${name} ${isOpen && "popup_active"}`} onClick={handleOverlayClose}>
       <div className={`popup-${name}__window`}>
         <button className={`popup__close popup-${name}__close-btn`} type="button" onClick={handleEventClose}></button>
-        <form className={`form form-${name}`} name={name} onSubmit={onSubmit}>
+        <form className={`form form-${name}`} name={name} onSubmit={onSubmit} noValidate>
           <h2 className={`form-${name}__title`}>{title}</h2>
           {children}
           <button className={`form__btn form-${name}__save-btn`} type="submit" disabled={submitDisabled}>{submitButtonText}</button>

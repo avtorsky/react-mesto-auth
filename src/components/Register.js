@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import * as auth from '../utils/auth.js';
 import { validateField } from '../utils/constants.js';
 import { Link } from 'react-router-dom';
 
@@ -15,9 +14,8 @@ const validationConfig = {
   }
 }
 
-function Register({ isOpen, onRegister}) {
+function Register({ handleRegister, onRender }) {
   const [isDisabled, setIsDisabled] = useState(true);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [formValues, setFormValues] = useState({
     email: '',
     password: ''
@@ -38,27 +36,12 @@ function Register({ isOpen, onRegister}) {
   const isSubmitDisabled = isPasswordInvalid || isEmailInvalid;
   const isEmailValid = errors.email.required || errors.email.email;
   const isPasswordValid = errors.password.required || errors.password.minLength;
-  const isInactive = isDisabled || isSubmitDisabled || isProcessing;
+  const isInactive = isDisabled || isSubmitDisabled || onRender;
 
   function handleSubmit(event) {
     event.preventDefault();
-    setIsProcessing(true);
-    auth.register(formValues.email, formValues.password)
-      .then((res) => {
-        if (!res.error) {
-          isOpen(true);
-          onRegister(true);
-        } else {
-          isOpen(true);
-        }
-      })
-      .catch((err) => {
-        console.log(`Аутентификация не пройдена. Ошибка ${err}`);
-      })
-      .finally(() => {
-        setIsDisabled(true);
-        setIsProcessing(false);
-      });
+    handleRegister(formValues.email, formValues.password);
+    setIsDisabled(true);
   };
 
   const handleInputChange = useCallback((event) => {
@@ -133,7 +116,7 @@ function Register({ isOpen, onRegister}) {
             type="submit"
             className={`form__btn form__btn_position_sign ${isInactive && 'form__btn_disabled'}`}
             disabled={isInactive}
-          >{isProcessing ? 'Аутентификация...' : 'Зарегистрироваться'}</button>
+          >{onRender ? 'Аутентификация...' : 'Зарегистрироваться'}</button>
         </form>
         <p className="login__auth-text">
           Уже зарегистрированы?&nbsp;

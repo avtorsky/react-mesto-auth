@@ -1,46 +1,27 @@
-import React, { useRef, useEffect, useContext, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PopupWithForm from './PopupWithForm.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import { formInputClass } from '../utils/constants.js';
+import { useFormValidation } from '../hooks/useFormValidation.js';
 
 function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, onRender }) {
   const currentUser = useContext(CurrentUserContext);
-  const avatarLink = useRef();
-  const [errorMessage, setErrorMessage] = useState('');
-  const [errorClass, setErrorClass] = useState({ input: '', error: ''})
-  const [submitDisabled, setSubmitDisabled] = useState(false);
-
-  function handleInput(elem) {
-    const { validity, validationMessage } = elem.target;
-    setErrorMessage(validationMessage);
-    setErrorClass({
-      input: !validity.valid ? formInputClass.inputErrorClass : '',
-      error: !validity.valid ? formInputClass.errorClass : ''
-    });
-    setSubmitDisabled(!validity.valid);
-  }
+  const { values, handleChange, errors, isValid, resetForm } = useFormValidation()
   
   function handleSubmit(event) {
     event.preventDefault();
     onUpdateAvatar({
-      avatar: avatarLink.current.value
+      avatar: values.link
     });
   };
 
   useEffect(() => {
     if (isOpen) {
-      avatarLink.current.value = currentUser.avatar;
-      setSubmitDisabled(false);
+      resetForm({ avatar: currentUser.avatar }, {}, false)
     } else {
-      avatarLink.current.value = '';
-      setSubmitDisabled(true);
+      resetForm();
     };
-    setErrorMessage('');
-    setErrorClass({
-      input: '',
-      error: ''
-    });
-  }, [isOpen, currentUser]);
+  }, [isOpen, currentUser, resetForm]);
 
   return (
     <PopupWithForm
@@ -50,25 +31,25 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, onRender }) {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
-      submitDisabled={submitDisabled}
+      submitDisabled={!isValid}
     >
       <fieldset className="form-avatar-edit__fieldset">
         <label className="form__field">
           <input
-            className={`form__input form-avatar-edit__input ${errorClass.input}`}
+            className={`form__input form-avatar-edit__input ${errors.link ? formInputClass.inputErrorClass : ""}`}
             type="url"
             id="avatar-link"
             name="link"
             placeholder="Ссылка на аватар"
             required
-            ref={avatarLink}
-            onInput={handleInput}
+            // ref={avatarLink}
+            onChange={handleChange}
             pattern="https?://.+"
           />
           <span
-            className={`form__input-error ${errorClass.error}`}
+            className={`form__input-error ${formInputClass.errorClass}`}
             id="avatar-link-error"
-          >{errorMessage}</span>
+          >{errors.link || ""}</span>
         </label>
       </fieldset>
     </PopupWithForm>
