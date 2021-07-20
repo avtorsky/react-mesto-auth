@@ -222,6 +222,7 @@ function App() {
           default:
             console.log(`Регистрация не выполнена. Ошибка ${err}`);
         };
+        setIsInfoTooltipPopupOpen(true);
       })
       .finally(() => {
         setIsProcessing(false);
