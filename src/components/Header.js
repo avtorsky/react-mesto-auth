@@ -6,7 +6,7 @@ function Header({ email, onSignOut }) {
   let history = useHistory();
 
   function handleClick() {
-    history.push('/');
+    history.push('/react-mesto-auth');
   };
 
   return (
@@ -14,17 +14,17 @@ function Header({ email, onSignOut }) {
       <img src={logo} className="header__logo" alt="На главную - Mesto Russia" onClick={handleClick}/>
       <>
       <Switch>
-        <Route path="/sign-in">
-          <Link to="/sign-up" className="header__element">
+        <Route path="/react-mesto-auth/sign-in">
+          <Link to="/react-mesto-auth/sign-up" className="header__element">
             Регистрация
           </Link>
         </Route>
-        <Route path="/sign-up">
-          <Link to="/sign-in" className="header__element">
+        <Route path="/react-mesto-auth/sign-up">
+          <Link to="/react-mesto-auth/sign-in" className="header__element">
             Войти
           </Link>
         </Route>
-        <Route path="/" exact>
+        <Route path="/react-mesto-auth" exact>
           <>
             <nav className="header__menu">
               <p className="header__menu-element">{email}</p>

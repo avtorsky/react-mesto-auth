@@ -154,7 +154,7 @@ function App() {
               loggedIn: true,
               email: res.data.email
             });
-            history.push('/');
+            history.push('/react-mesto-auth');
           }
         })
         .catch(err => {
@@ -174,7 +174,7 @@ function App() {
             ...prevState,
             loggedIn: true
           }));
-          history.push('/');
+          history.push('/react-mesto-auth');
         }
       })
       .catch((err) => {
@@ -200,7 +200,7 @@ function App() {
       email: null
     });
     localStorage.removeItem('token');
-    history.push('/sign-in');
+    history.push('/react-mesto-auth/sign-in');
   };
 
   function handleRegister(email, password) {
@@ -266,7 +266,7 @@ function App() {
           />
           <Switch>
             <ProtectedRoute
-            path="/" exact
+            path="/react-mesto-auth" exact
             component={Main}
             onEditAvatar={handleEditAvatarClick}
             onEditProfile={handleEditProfileClick}
@@ -278,14 +278,14 @@ function App() {
             loggedIn={authState.loggedIn}
             email={authState.email}
             />
-            <Route path="/sign-in">
+            <Route path="/react-mesto-auth/sign-in">
               <Login
                 handleLogin={handleLogin}
                 email={authState.email}
                 onRender={isProcessing}
               />
             </Route>
-            <Route path="/sign-up">
+            <Route path="/react-mesto-auth/sign-up">
               <Register
                 handleRegister={handleRegister}
                 onRender={isProcessing}
@@ -294,8 +294,8 @@ function App() {
             <Route path="*">
               <NotFound />
             </Route>
-            <Route path="/">
-              {authState.loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+            <Route path="/react-mesto-auth">
+              {authState.loggedIn ? <Redirect to="/react-mesto-auth" /> : <Redirect to="/react-mesto-auth/sign-in" />}
             </Route>
           </Switch>
           <Footer />

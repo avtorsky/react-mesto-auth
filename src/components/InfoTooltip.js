@@ -18,7 +18,7 @@ function InfoTooltip({ isOpen, onClose, onRegister, registration }) {
         <button
           onClick={() => {
             onClose();
-            registration && history.push('/sign-in');
+            registration && history.push('/react-mesto-auth/sign-in');
             onRegister(false);
           }}
           type="button"

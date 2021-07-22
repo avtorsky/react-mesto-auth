@@ -6,7 +6,7 @@ function NotFound() {
   let history = useHistory();
   
   function handleClick() {
-    history.push('/');
+    history.push('/react-mesto-auth');
   };
 
   return (
