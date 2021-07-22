@@ -12,6 +12,9 @@ Developed under the [Practicum](https://practicum.yandex.com/web/) online bootca
 * JavaScript, React, Jest
 
 ## Changelog
+Release 20210722:
+* build(package.json): project deploy in production via NPM <a href="https://github.com/gitname/react-gh-pages" target="_blank">gh-pages</a>
+
 Release 20210718:
 * feat(App.js): registration && authorization major release
 
