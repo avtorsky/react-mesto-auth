@@ -120,7 +120,7 @@ function Register({ handleRegister, onRender }) {
         </form>
         <p className="login__auth-text">
           Уже зарегистрированы?&nbsp;
-          <Link to="/sign-in" className="login__auth">Войти</Link>
+          <Link to="/react-mesto-auth/sign-in" className="login__auth">Войти</Link>
         </p>
       </div>
     </section>
